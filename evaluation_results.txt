@@ -1,0 +1,56 @@
+=== Configuration ===
+files: CONDA_train.csv (26921 rows), CONDA_valid.csv (8974 rows)
+training set: 23631 messages from 1681 matches
+dev set:      3290 messages from 230 matches
+test (valid): 8974 messages from 1778 matches
+TF-IDF: {'ngram_range': (1, 2), 'min_df': 2, 'sublinear_tf': True}, vocabulary size 9383
+LogisticRegression: {'C': 1.0, 'max_iter': 1000, 'class_weight': 'balanced'}, solver lbfgs; split seed 42, dev size 0.12
+
+valid matches also in the official train file: 1772 of 1778
+valid messages whose match is NOT in the training portion: 1101 (218 matches); of these, from dev matches: 1092
+
+=== Main run (seed 42) with 95% match-level bootstrap CI ===
+                          n  matches  n_A   n_E  n_I   n_O
+subset                                                    
+dev                    3290      230  198   442  159  2491
+valid (all)            8974     1778  580  1183  582  6629
+valid, seen matches    7873     1560  511  1025  527  5810
+valid, unseen matches  1101      218   69   158   55   819
+                         acc  macroF1   F1_A   F1_E   F1_I   F1_O
+subset                                                           
+dev                    0.882    0.772  0.685  0.806  0.667  0.930
+valid (all)            0.872    0.767  0.678  0.804  0.663  0.925
+valid, seen matches    0.871    0.767  0.668  0.803  0.672  0.924
+valid, unseen matches  0.882    0.768  0.750  0.815  0.576  0.931
+                       bin_acc  bin_macroF1  toxicF1
+subset                                              
+dev                      0.923        0.873    0.794
+valid (all)              0.919        0.875    0.800
+valid, seen matches      0.919        0.875    0.800
+valid, unseen matches    0.920        0.876    0.802
+                               acc_CI      macroF1_CI  bin_macroF1_CI      toxicF1_CI
+subset                                                                               
+dev                    [0.866, 0.896]  [0.746, 0.798]  [0.856, 0.889]  [0.764, 0.821]
+valid (all)            [0.864, 0.880]  [0.753, 0.781]  [0.865, 0.883]  [0.783, 0.814]
+valid, seen matches    [0.863, 0.879]  [0.752, 0.781]  [0.865, 0.885]  [0.783, 0.816]
+valid, unseen matches  [0.863, 0.902]  [0.726, 0.807]  [0.849, 0.899]  [0.758, 0.839]
+
+=== 5 split seeds: per seed ===
+subset    dev  valid (all)  valid, seen matches  valid, unseen matches
+seed                                                                  
+0       0.781        0.769                0.771                  0.752
+1       0.774        0.772                0.775                  0.747
+2       0.777        0.770                0.769                  0.771
+3       0.765        0.770                0.768                  0.786
+42      0.772        0.767                0.767                  0.768
+
+=== 5 split seeds: mean +/- std ===
+                            n             acc        macroF1          F1_I        bin_macroF1        toxicF1       
+                         mean      std   mean    std    mean    std   mean    std        mean    std    mean    std
+subset                                                                                                             
+dev                    3239.4  109.459  0.875  0.007   0.774  0.006  0.676  0.020       0.873  0.005   0.798  0.008
+valid (all)            8974.0    0.000  0.873  0.001   0.770  0.002  0.670  0.005       0.877  0.001   0.803  0.002
+valid, seen matches    7866.0   31.528  0.873  0.002   0.770  0.003  0.674  0.006       0.878  0.002   0.804  0.004
+valid, unseen matches  1108.0   31.528  0.870  0.010   0.765  0.016  0.639  0.043       0.872  0.008   0.795  0.012
+
+macro F1 seen - unseen, per seed: [0.019, 0.028, -0.002, -0.018, -0.001]  mean 0.005
